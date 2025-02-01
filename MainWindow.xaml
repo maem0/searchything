@@ -1,0 +1,104 @@
+﻿<Window x:Class="Searchything.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Searchything" Height="450" Width="350"
+        WindowStyle="None" 
+        ShowInTaskbar="False"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        WindowStartupLocation="Manual"
+        Deactivated="Window_Deactivated"
+        FocusManager.FocusedElement="{Binding ElementName=SearchBox}"
+        ShowActivated="True">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+        <Storyboard x:Key="SlideIn">
+            <ThicknessAnimation Storyboard.TargetName="MainBorder"
+                        Storyboard.TargetProperty="Margin"
+                     From="350,0,345,0" To="0,0,0,0"
+                        Duration="0:0:0.2">
+                <ThicknessAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+            <ThicknessAnimation Storyboard.TargetName="ContentPanel"
+                        Storyboard.TargetProperty="Margin"
+                        From="350,10,-350,10" To="10,10,10,10"
+                        Duration="0:0:0.3"
+                        BeginTime="0:0:0.04">
+                <ThicknessAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+        <Storyboard x:Key="SlideOut">
+            <ThicknessAnimation Storyboard.TargetName="ContentPanel"
+                        Storyboard.TargetProperty="Margin"
+                        From="10,10,10,10" To="350,0,345,0"
+                        Duration="0:0:0.2">
+                <ThicknessAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+            <ThicknessAnimation Storyboard.TargetName="MainBorder"
+                        Storyboard.TargetProperty="Margin"
+                        From="0,0,0,0" To="350,0,-350,0"
+                        Duration="0:0:0.3"
+                        BeginTime="0:0:0.05">
+                <ThicknessAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+    </Window.Resources>
+    <Border x:Name="MainBorder" 
+        Background="#2D2D30"
+        Width="350"
+        HorizontalAlignment="Left"
+        BorderBrush="#3F3F46" 
+        BorderThickness="1"
+        Padding="36, 20"
+        Effect="{StaticResource DropShadowEffect}">
+        <StackPanel x:Name="ContentPanel" Margin="40" >
+            <TextBlock   FontSize="27" Foreground="White" Text="Search" Margin="0,7"/>
+            <TextBlock   FontSize="14" Foreground="White" Text="Everything" Margin="0,9,4,8"/>
+            <TextBox x:Name="SearchBox"
+         LostFocus="SearchBox_LostFocus"
+         PreviewKeyDown="SearchBox_PreviewKeyDown"
+                     Height="32" 
+                     Width="256"
+                     Padding="4,4,2,2"
+                     FontSize="18" 
+                      Margin="0, 0,0,16" 
+                     FontWeight="Light" 
+                     Background="White"
+                     Foreground="Black"
+                     BorderBrush="#FFF"
+                     TextChanged="SearchBox_TextChanged"
+                     FocusVisualStyle="{x:Null}"
+                />
+            <ListBox x:Name="ResultsList"
+                     Background="Transparent"
+                     VirtualizingStackPanel.IsVirtualizing="True"
+         VirtualizingStackPanel.VirtualizationMode="Recycling" 
+                     BorderThickness="0"
+                     Foreground="White"
+                          Width="256"
+                       MouseDoubleClick="ResultsList_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Background="#2D2D30" Width="40" Height="40" Margin="0,2">
+                                <Image Source="{Binding Icon}" VerticalAlignment="Center" Width="32" Height="32"/>
+                            </Border>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Top" Margin="8" FontSize="13"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </Border>
+</Window>
